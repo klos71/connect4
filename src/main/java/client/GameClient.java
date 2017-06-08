@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import packages.ClientPackage;
 import packages.GameBoard;
 import packages.GamePacket;
 
@@ -24,6 +25,8 @@ public class GameClient {
 
          Kryo kryo = client.getKryo();
          kryo.register(GamePacket.class);
+         kryo.register(GameBoard.class);
+         kryo.register(ClientPackage.class);
 
          if(client.isConnected()){
             System.out.println("connected");

@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import packages.ClientPackage;
+import packages.GameBoard;
 import packages.GamePacket;
 
 import java.io.IOException;
@@ -29,6 +30,8 @@ public class GameServer {
 
             Kryo kryo = server.getKryo();
             kryo.register(GamePacket.class);
+            kryo.register(GameBoard.class);
+            kryo.register(ClientPackage.class);
 
 
             server.addListener(new Listener() {

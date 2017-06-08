@@ -24,8 +24,8 @@ public class GameRoom implements Runnable{
 
     @Override
     public void run(){
-        while(isRunning = true){
-            //game logic
+        while(isRunning == true){
+
         }
     }
 
@@ -34,7 +34,7 @@ public class GameRoom implements Runnable{
     }
 
     public GameBoard getGameBoard(){
-        return GameBoard;
+        return null;
     }
 
     public void start() {
