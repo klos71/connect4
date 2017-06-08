@@ -1,5 +1,6 @@
 package server;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -18,6 +19,9 @@ public class GameServer {
             server.start();
             server.bind(8080);
 
+            Kryo kryo = server.getKryo();
+            kryo.register(GamePacket.class);
+
 
             server.addListener(new Listener() {
                 public void received (Connection connection, Object object) {
@@ -25,7 +29,8 @@ public class GameServer {
                         GamePacket request = (GamePacket) object;
                         System.out.println(request.GameRoomName);
 
-
+                        request.GameRoomName = "test";
+                        connection.sendTCP(request);
                     }
                 }
             });
