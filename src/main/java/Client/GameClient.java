@@ -22,12 +22,21 @@ public class GameClient {
          Kryo kryo = client.getKryo();
          kryo.register(GamePacket.class);
 
+         if(client.isConnected()){
+            System.out.println("connected");
+         }
+
          GamePacket packet = new GamePacket();
          packet.GameRoomName = "test123";
          client.sendTCP(packet);
 
+
+
          client.addListener(new Listener() {
             public void received (Connection connection, Object object) {
+               connection.setKeepAliveTCP(5000);
+
+
                if (object instanceof GamePacket) {
                   GamePacket response = (GamePacket) object;
                   System.out.println(response.GameRoomName);
