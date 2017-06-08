@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
