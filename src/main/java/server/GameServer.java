@@ -1,9 +1,11 @@
 package server;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import packages.ClientPackage;
 import packages.GamePacket;
 
 import java.io.IOException;
@@ -17,6 +19,7 @@ public class GameServer {
 
     private List<Connection> players = new ArrayList<>();
     private List<GameRoom> GameRooms = new ArrayList<>();
+    private String[] names = {"room1", "room2", "room3", "room4"};
 
     public void run(){
         try{
@@ -32,7 +35,8 @@ public class GameServer {
                 public void received (Connection connection, Object object) {
                     players.add(connection);
                     if(players.size() >= 2){
-                        GameRoom newGame = new GameRoom(players.get(0),players.get(1));
+                        int index = GameRooms.size();
+                        GameRoom newGame = new GameRoom(players.get(0),players.get(1),names[index]);
                         for(int i = 0; i > players.size();i++){
                             players.remove(i);
                         }
@@ -40,8 +44,18 @@ public class GameServer {
                         newGame.start();
                     }
 
-                    if (object instanceof GamePacket) {
-                        
+                    if(object instanceof ClientPackage){
+                        ClientPackage request = (ClientPackage) object;
+                        for(int i = 0;i > GameRooms.size();i++){
+                            if(GameRooms.get(i).name.equals(request.gameRoomName)){
+                                GameRooms.get(i).dropDisc(request.row);
+                                //send boardstate to players
+                                GameBoard state = (GameBoard) object;
+
+                                server.sendToTCP(GameRooms.get(i).playerTwo.getID(),state);
+                                server.sendToTCP(GameRooms.get(i).playerTwo.getID(),state);
+                            }
+                        }
                     }
                 }
             });

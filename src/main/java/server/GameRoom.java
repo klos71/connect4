@@ -1,6 +1,7 @@
 package server;
 
 import com.esotericsoftware.kryonet.Connection;
+import packages.GameBoard;
 
 /**
  * Created by klos71 on 08/06/2017.
@@ -9,13 +10,15 @@ public class GameRoom implements Runnable{
 
     private boolean isRunning = true;
     Thread t;
-    Connection playerOne;
-    Connection playerTwo;
+    public Connection playerOne;
+    public Connection playerTwo;
+    String name;
 
 
-    public GameRoom(Connection playerOne, Connection playerTwo) {
+    public GameRoom(Connection playerOne, Connection playerTwo,String name) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
+        this.name = name;
 
     }
 
@@ -24,6 +27,14 @@ public class GameRoom implements Runnable{
         while(isRunning = true){
             //game logic
         }
+    }
+
+    public void dropDisc(int row){
+
+    }
+
+    public GameBoard getGameBoard(){
+        return GameBoard;
     }
 
     public void start() {

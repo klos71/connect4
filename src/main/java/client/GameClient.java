@@ -4,7 +4,9 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import packages.GameBoard;
 import packages.GamePacket;
+
 
 import javax.swing.*;
 import java.io.IOException;
@@ -38,9 +40,9 @@ public class GameClient {
                connection.setKeepAliveTCP(5000);
 
 
-               if (object instanceof GamePacket) {
-                  GamePacket response = (GamePacket) object;
-                  System.out.println(response.GameRoomName);
+               if (object instanceof GameBoard) {
+                  GameBoard response = (GameBoard) object;
+                  response.getBoardState();
                }
             }
          });
