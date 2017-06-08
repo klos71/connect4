@@ -7,11 +7,16 @@ import com.esotericsoftware.kryonet.Server;
 import packages.GamePacket;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by klos71 on 08/06/2017.
  */
 public class GameServer {
+
+    private List<Connection> players = new ArrayList<>();
+    private List<GameRoom> GameRooms = new ArrayList<>();
 
     public void run(){
         try{
@@ -25,12 +30,18 @@ public class GameServer {
 
             server.addListener(new Listener() {
                 public void received (Connection connection, Object object) {
-                    if (object instanceof GamePacket) {
-                        GamePacket request = (GamePacket) object;
-                        System.out.println(request.GameRoomName);
+                    players.add(connection);
+                    if(players.size() >= 2){
+                        GameRoom newGame = new GameRoom(players.get(0),players.get(1));
+                        for(int i = 0; i > players.size();i++){
+                            players.remove(i);
+                        }
+                        GameRooms.add(newGame);
+                        newGame.start();
+                    }
 
-                        request.GameRoomName = "test";
-                        connection.sendTCP(request);
+                    if (object instanceof GamePacket) {
+                        
                     }
                 }
             });
