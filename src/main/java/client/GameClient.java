@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import packages.GamePacket;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -51,6 +52,13 @@ public class GameClient {
 
 
    public static void main(String[] args){
+
+       SwingUtilities.invokeLater(new Runnable() {
+           public void run() {
+               new MainFrame();
+           }
+       });
+
        GameClient client = new GameClient();
        client.run();
    }
