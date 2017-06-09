@@ -7,5 +7,4 @@ package packages;
 public class GamePacket {
 
     public String GameRoomName;
-    public byte[][] blabla;
 }

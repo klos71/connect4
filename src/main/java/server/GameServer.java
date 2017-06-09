@@ -38,7 +38,7 @@ public class GameServer {
                 public void received (Connection connection, Object object) {
                     players.add(connection);
                     if(players.size() >= 2){
-                        int index = GameRooms.size();
+                        int index = 0;
                         GameRoom newGame = new GameRoom(players.get(0),players.get(1),names[index]);
                         for(int i = 0; i > players.size();i++){
                             players.remove(i);
@@ -49,6 +49,7 @@ public class GameServer {
 
                     if(object instanceof ClientPackage){
                         ClientPackage request = (ClientPackage) object;
+                        System.out.println(request.row);
                         for(int i = 0;i > GameRooms.size();i++){
                             if(GameRooms.get(i).name.equals(request.gameRoomName)){
                                 GameRooms.get(i).dropDisc(request.row);

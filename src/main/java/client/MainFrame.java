@@ -1,10 +1,18 @@
-package client;
+package Client;
+
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import packages.ClientPackage;
+import packages.GameBoard;
+
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import java.util.ArrayList;
+
+
+import static com.esotericsoftware.jsonbeans.JsonValue.ValueType.object;
 
 public class MainFrame implements ActionListener {
 
@@ -66,15 +74,21 @@ public class MainFrame implements ActionListener {
 
         } else if (ae.getActionCommand().equals("1")) {
 
+
         } else if (ae.getActionCommand().equals("2")) {
+
 
         } else if (ae.getActionCommand().equals("3")) {
 
+
         } else if (ae.getActionCommand().equals("4")) {
+
 
         } else if (ae.getActionCommand().equals("5")) {
 
+
         } else if (ae.getActionCommand().equals("6")) {
+
 
         }
     }
