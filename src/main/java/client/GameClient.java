@@ -1,4 +1,4 @@
-package Client;
+package client;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Created by klos71 on 08/06/2017.
  */
-public class GameClient {
+public class GameClient implements InputListener {
 
 
    public static Client client = new Client();
@@ -56,17 +56,20 @@ public class GameClient {
 
    }
 
+   public void inputReceived(InputEvent ie) {
+
+   }
+
 
    public static void main(String[] args){
 
        SwingUtilities.invokeLater(new Runnable() {
            public void run() {
-               new MainFrame();
+               GameClient client = new GameClient();
+               MainFrame gui = new MainFrame();
+               gui.setInputListener(client);
+               //client.run();
            }
        });
-
-       GameClient client = new GameClient();
-       client.run();
    }
-
 }
