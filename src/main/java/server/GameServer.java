@@ -75,6 +75,12 @@ public class GameServer{
                                         win.ID = GameRooms.get(i).playerOne.getID();
                                         server.sendToTCP(GameRooms.get(i).playerOne.getID(),win);
                                         server.sendToTCP(GameRooms.get(i).playerTwo.getID(),win);
+                                        try{
+                                            new Analyzer().saveWinner(1);
+                                        }catch (IOException e){
+                                            e.printStackTrace();
+                                        }
+
 
                                     }
                                 } else if (connection.getID() == GameRooms.get(i).playerTwo.getID()) {
@@ -86,6 +92,11 @@ public class GameServer{
                                         win.ID = GameRooms.get(i).playerTwo.getID();
                                         server.sendToTCP(GameRooms.get(i).playerOne.getID(),win);
                                         server.sendToTCP(GameRooms.get(i).playerTwo.getID(),win);
+                                        try{
+                                            new Analyzer().saveWinner(2);
+                                        }catch (IOException e){
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
 
@@ -110,6 +121,7 @@ public class GameServer{
     public static void main(String[] args){
         GameServer server = new GameServer();
         server.run();
+
     }
 
 }
