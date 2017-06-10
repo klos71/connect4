@@ -6,10 +6,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-import packages.ClientPackage;
-import packages.GameBoard;
-import packages.GamePacket;
-import packages.ServerString;
+import packages.*;
 
 
 import java.io.IOException;
@@ -24,6 +21,7 @@ public class GameServer{
     private List<Connection> players = new ArrayList<>();
     private List<GameRoom> GameRooms = new ArrayList<>();
     private String[] names = {"room1", "room2", "room3", "room4"};
+    private int index = 0;
 
     public void run() {
         try {
@@ -36,6 +34,7 @@ public class GameServer{
             kryo.register(byte[][].class);
             kryo.register(byte[].class);
             kryo.register(byte.class);
+            kryo.register(WinPacket.class);
             server.start();
             server.bind(8080, 8081);
             server.addListener(new Listener() {
@@ -43,7 +42,6 @@ public class GameServer{
                     players.add(c);
                     System.out.println(players.size());
                     if (players.size() >= 2) {
-                        int index = 0;
                         System.out.println("creating gameroom");
                         GameRoom newGame = new GameRoom(players.get(0), players.get(1), names[index], new GameBoard());
                         ServerString string = new ServerString();
@@ -72,10 +70,23 @@ public class GameServer{
                                     System.out.println("player 1 drops disc");
                                     //drop disc for player
                                     GameRooms.get(i).dropDisc(request.row,(byte)(GameRooms.get(i).playerOne.getID()%2+1));
+                                    if(GameRooms.get(i).win = GameRooms.get(i).getGameBoard().checkWin()){
+                                        WinPacket win = new WinPacket();
+                                        win.ID = GameRooms.get(i).playerOne.getID();
+                                        server.sendToTCP(GameRooms.get(i).playerOne.getID(),win);
+                                        server.sendToTCP(GameRooms.get(i).playerTwo.getID(),win);
+
+                                    }
                                 } else if (connection.getID() == GameRooms.get(i).playerTwo.getID()) {
                                     System.out.println("player 2 drops disc");
                                     //drop disc for player 2
                                     GameRooms.get(i).dropDisc(request.row,(byte)(GameRooms.get(i).playerTwo.getID()%2+1));
+                                    if(GameRooms.get(i).win = GameRooms.get(i).getGameBoard().checkWin()){
+                                        WinPacket win = new WinPacket();
+                                        win.ID = GameRooms.get(i).playerTwo.getID();
+                                        server.sendToTCP(GameRooms.get(i).playerOne.getID(),win);
+                                        server.sendToTCP(GameRooms.get(i).playerTwo.getID(),win);
+                                    }
                                 }
 
                                 //send boardstate to players
@@ -85,6 +96,7 @@ public class GameServer{
                                 System.out.println("Sending board state");
                                 server.sendToTCP(GameRooms.get(i).playerOne.getID(), state);
                                 server.sendToTCP(GameRooms.get(i).playerTwo.getID(), state);
+
                             }
                         }
                     }

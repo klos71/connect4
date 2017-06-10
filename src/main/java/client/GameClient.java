@@ -5,10 +5,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import packages.ClientPackage;
-import packages.GameBoard;
-import packages.GamePacket;
-import packages.ServerString;
+import packages.*;
 
 
 import javax.swing.*;
@@ -63,6 +60,7 @@ public class GameClient implements InputListener{
            kryo.register(byte[][].class);
            kryo.register(byte[].class);
            kryo.register(byte.class);
+           kryo.register(WinPacket.class);
 
            client.start();
            client.connect(5000, "127.0.0.1", 8080, 8081);
@@ -92,6 +90,14 @@ public class GameClient implements InputListener{
                        ServerString name = (ServerString)object;
                        System.out.println("roomname: " + name.text);
                         roomName = name.text;
+                   }
+                   if(object instanceof WinPacket){
+                       WinPacket winner = (WinPacket)object;
+                       if(winner.ID == client.getID()){
+                           JOptionPane.showMessageDialog(null,"YOU WON!");
+                       }else if(winner.ID != client.getID()){
+                           JOptionPane.showMessageDialog(null,"YOU LOST,LOSER!");
+                       }
                    }
                }
            });

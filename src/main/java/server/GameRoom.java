@@ -14,6 +14,7 @@ public class GameRoom implements Runnable{
     public Connection playerTwo;
     String name;
     public GameBoard board;
+    public boolean win = false;
 
 
     public GameRoom(Connection playerOne, Connection playerTwo,String name,GameBoard board) {
