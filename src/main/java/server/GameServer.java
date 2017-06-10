@@ -28,18 +28,23 @@ public class GameServer{
         try{
             //Log.set(Log.LEVEL_TRACE);
             Server server = new Server();
-            server.start();
-            server.bind(8080, 8081);
-
             Kryo kryo = server.getKryo();
             kryo.register(ClientPackage.class);
             kryo.register(ServerString.class);
+            server.start();
+            server.bind(8080, 8081);
+
+            System.out.println("blabla3");
+
 
             server.addListener(new Listener() {
                 public void received (Connection connection, Object object) {
+                    System.out.println("blabla");
+
                     if (object instanceof ClientPackage) {
                         ClientPackage request = (ClientPackage)object;
                         System.out.println(request.gameRoomName);
+                        System.out.println("blabla2");
 
                         ServerString response = new ServerString();
                         response.text = "Thanks";

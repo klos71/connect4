@@ -39,10 +39,9 @@ public class GameClient {
            }
        });*/
        try {
-           //Log.set(Log.LEVEL_TRACE);
+           Log.set(Log.LEVEL_TRACE);
            Client client = new Client();
-           client.start();
-           client.connect(5000, "127.0.0.1", 8080);
+
 
            Kryo kryo = client.getKryo();
            //kryo.register(GamePacket.class);
@@ -50,6 +49,8 @@ public class GameClient {
            kryo.register(ClientPackage.class);
            kryo.register(ServerString.class);
 
+           client.start();
+           client.connect(5000, "127.0.0.1", 8080, 8081);
 
 
            ClientPackage request = new ClientPackage();
@@ -66,7 +67,8 @@ public class GameClient {
            });*/
 
        }catch (IOException e){
-
+            e.printStackTrace();
+            System.out.println(e);
        }
    }
 
