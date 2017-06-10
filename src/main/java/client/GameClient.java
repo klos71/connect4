@@ -12,6 +12,7 @@ import packages.ServerString;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.SocketException;
@@ -23,6 +24,9 @@ public class GameClient implements InputListener{
 
     //public static Client client;
    private InputEvent ie;
+   private MainFrame gui;
+
+
 
 
    public void inputReceived(InputEvent ie) {
@@ -32,7 +36,8 @@ public class GameClient implements InputListener{
        SwingUtilities.invokeLater(new Runnable() {
            public void run() {
                GameClient client = new GameClient();
-               MainFrame gui = new MainFrame();
+               MainFrame g = new MainFrame();
+               gui = g;
                gui.setInputListener(client);
                //client.run();
            }
@@ -64,8 +69,19 @@ public class GameClient implements InputListener{
                        System.out.println(response.text);
                    }
                    if(object instanceof GameBoard){
-                       GameBoard state = (GameBoard)object;
-                       state.getBoardState();
+                       GameBoard board = (GameBoard)object;
+                       byte[][] boardState = board.getBoardState();
+
+                       for (int x = 0; x < 7; x++) {
+                           for (int y = 0; y < 6; y++) {
+                               if (boardState[x][y] == (byte) 1) {
+                                   gui.getButton(x, y).setForeground(Color.RED);
+                               } else if (boardState[x][y] == (byte) 2) {
+                                   gui.getButton(x, y).setForeground(Color.YELLOW);
+                               }
+                           }
+                       }
+
                    }
                }
            });
