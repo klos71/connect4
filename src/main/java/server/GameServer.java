@@ -7,6 +7,8 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import packages.ClientPackage;
+import packages.GameBoard;
+import packages.GamePacket;
 import packages.ServerString;
 
 
@@ -24,58 +26,35 @@ public class GameServer{
     private String[] names = {"room1", "room2", "room3", "room4"};
 
     public void run() {
-
-        try{
-            //Log.set(Log.LEVEL_TRACE);
+        try {
             Server server = new Server();
             Kryo kryo = server.getKryo();
             kryo.register(ClientPackage.class);
             kryo.register(ServerString.class);
+            kryo.register(GamePacket.class);
+            kryo.register(GameBoard.class);
             server.start();
             server.bind(8080, 8081);
-
-            System.out.println("blabla3");
-
-
-            server.addListener(new Listener() {
-                public void received (Connection connection, Object object) {
-                    System.out.println("blabla");
-
-                    if (object instanceof ClientPackage) {
-                        ClientPackage request = (ClientPackage)object;
-                        System.out.println(request.gameRoomName);
-                        System.out.println("blabla2");
-
-                        ServerString response = new ServerString();
-                        response.text = "Thanks";
-                        connection.sendTCP(response);
-
-                    }
-                }
-            });
-        }catch (IOException e){
-
-        }
-
-        /*try {
-            Server server = new Server();
             server.addListener(new Listener() {
                 public void received(Connection connection, Object object) {
-                    //connection.setKeepAliveTCP(8000);
+                    connection.setKeepAliveTCP(8000);
                     players.add(connection);
+                    System.out.println(players.size());
                     if (players.size() >= 2) {
                         int index = 0;
+                        System.out.println("creating gameroom");
                         GameRoom newGame = new GameRoom(players.get(0), players.get(1), names[index], new GameBoard());
-                        for (int i = 0; i > players.size(); i++) {
-                            players.remove(i);
-                        }
+
+                            players.clear();
+
                         GameRooms.add(newGame);
                         newGame.start();
                     }
 
                     if (object instanceof ClientPackage) {
                         ClientPackage request = (ClientPackage) object;
-                        System.out.println(request.row);
+                        //System.out.println(request.gameRoomName);
+                        //System.out.println(request.row);
                         for (int i = 0; i > GameRooms.size(); i++) {
                             if (GameRooms.get(i).name.equals(request.gameRoomName)) {
                                 if (connection.getID() == GameRooms.get(i).playerOne.getID()) {
@@ -95,7 +74,10 @@ public class GameServer{
                         }
                     }
                 }
-            });*/
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args){
