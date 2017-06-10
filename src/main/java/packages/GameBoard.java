@@ -95,12 +95,24 @@ public class GameBoard {
                 }
             }
         }
-        for (int x = 3; x < 7; x++) {
+        /*
+        for (int x = 0; x < 7; x++) {
             for (int y = 3; y < 6; y++) {
                 if (boardState[x][y] != 0 &&
                         boardState[x][y] == boardState[x - 1][y - 1] &&
                         boardState[x][y] == boardState[x - 2][y - 2] &&
                         boardState[x][y] == boardState[x - 3][y - 3]) {
+                    return true;
+                }
+            }
+        }
+        */
+        for (int x = 3; x < 7; x++) {
+            for (int y = 0; y < 4; y++) {
+                if (boardState[x][y] != 0 &&
+                        boardState[x][y] == boardState[x - 1][y + 1] &&
+                        boardState[x][y] == boardState[x - 2][y + 2] &&
+                        boardState[x][y] == boardState[x - 3][y + 3]) {
                     return true;
                 }
             }
