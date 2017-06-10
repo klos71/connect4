@@ -1,9 +1,6 @@
 package client;
 
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import packages.ClientPackage;
-import packages.GameBoard;
+
 
 
 import java.awt.*;
@@ -12,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 
-import static com.esotericsoftware.jsonbeans.JsonValue.ValueType.object;
 
 public class MainFrame implements ActionListener {
 

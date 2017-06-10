@@ -13,12 +13,14 @@ public class GameRoom implements Runnable{
     public Connection playerOne;
     public Connection playerTwo;
     String name;
+    public GameBoard board;
 
 
-    public GameRoom(Connection playerOne, Connection playerTwo,String name) {
+    public GameRoom(Connection playerOne, Connection playerTwo,String name,GameBoard board) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.name = name;
+        this.board = board;
 
     }
 
@@ -29,8 +31,8 @@ public class GameRoom implements Runnable{
         }
     }
 
-    public void dropDisc(int row){
-
+    public void dropDisc(int row, byte player){
+        board.dropDisc(row,player);
     }
 
     public GameBoard getGameBoard(){
