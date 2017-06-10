@@ -1,6 +1,8 @@
 package server;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.serializers.BlowfishSerializer;
+import com.esotericsoftware.kryo.serializers.DefaultSerializers;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -9,7 +11,9 @@ import com.esotericsoftware.minlog.Log;
 import packages.*;
 
 
+import javax.crypto.KeyGenerator;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +30,8 @@ public class GameServer{
     public void run() {
         try {
             Server server = new Server();
+            byte[] key = null;
+            key = KeyGenerator.getInstance("Blowfish").generateKey().getEncoded();
             Kryo kryo = server.getKryo();
             kryo.register(ClientPackage.class);
             kryo.register(ServerString.class);
@@ -35,6 +41,7 @@ public class GameServer{
             kryo.register(byte[].class);
             kryo.register(byte.class);
             kryo.register(WinPacket.class);
+            kryo.register(String.class, new BlowfishSerializer(new DefaultSerializers.StringSerializer(), key));
             server.start();
             server.bind(8080, 8081);
             server.addListener(new Listener() {
@@ -115,6 +122,8 @@ public class GameServer{
             });
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (NoSuchAlgorithmException n){
+            n.printStackTrace();
         }
     }
 

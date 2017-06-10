@@ -1,6 +1,8 @@
 package client;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.serializers.BlowfishSerializer;
+import com.esotericsoftware.kryo.serializers.DefaultSerializers;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -8,11 +10,13 @@ import com.esotericsoftware.minlog.Log;
 import packages.*;
 
 
+import javax.crypto.KeyGenerator;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.SocketException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by klos71 on 08/06/2017.
@@ -50,7 +54,8 @@ public class GameClient implements InputListener{
        try {
            //Log.set(Log.LEVEL_TRACE);
            client = new Client();
-
+           byte[] key = null;
+           key = KeyGenerator.getInstance("Blowfish").generateKey().getEncoded();
 
            Kryo kryo = client.getKryo();
            kryo.register(ClientPackage.class);
@@ -61,6 +66,8 @@ public class GameClient implements InputListener{
            kryo.register(byte[].class);
            kryo.register(byte.class);
            kryo.register(WinPacket.class);
+           kryo.register(String.class, new BlowfishSerializer(new DefaultSerializers.StringSerializer(), key));
+
 
            client.start();
            client.connect(5000, "127.0.0.1", 8080, 8081);
@@ -105,6 +112,8 @@ public class GameClient implements InputListener{
        }catch (IOException e){
             e.printStackTrace();
             System.out.println(e);
+       }catch (NoSuchAlgorithmException n){
+           n.printStackTrace();
        }
    }
 
