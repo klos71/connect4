@@ -21,12 +21,16 @@ import java.net.SocketException;
  */
 public class GameClient implements InputListener{
 
-    //public static Client client;
-   private InputEvent ie;
+   private String roomName;
+   private Client client;
 
 
    public void inputReceived(InputEvent ie) {
-        this.ie = ie;
+       System.out.println(ie.getColumn());
+       ClientPackage request = new ClientPackage();
+       request.row = ie.getColumn();
+       request.gameRoomName = roomName;
+       client.sendTCP(request);
    }
    public void start(){
        SwingUtilities.invokeLater(new Runnable() {
@@ -39,7 +43,7 @@ public class GameClient implements InputListener{
        });
        try {
            //Log.set(Log.LEVEL_TRACE);
-           Client client = new Client();
+           client = new Client();
 
 
            Kryo kryo = client.getKryo();
@@ -52,10 +56,6 @@ public class GameClient implements InputListener{
            client.connect(5000, "127.0.0.1", 8080, 8081);
 
 
-           ClientPackage request = new ClientPackage();
-           request.gameRoomName = "room1";
-           client.sendTCP(request);
-
            client.addListener(new Listener() {
                public void received (Connection connection, Object object) {
                    //connection.setKeepAliveTCP(8000);
@@ -67,6 +67,10 @@ public class GameClient implements InputListener{
                        GameBoard state = (GameBoard)object;
                        state.getBoardState();
                    }
+                   if(object instanceof ServerString){
+                       ServerString name = (ServerString)object;
+                        roomName = name.text;
+                   }
                }
            });
 
@@ -75,6 +79,7 @@ public class GameClient implements InputListener{
             System.out.println(e);
        }
    }
+
 
 
    public static void main(String[] args){

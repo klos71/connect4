@@ -43,6 +43,10 @@ public class GameServer{
                         int index = 0;
                         System.out.println("creating gameroom");
                         GameRoom newGame = new GameRoom(players.get(0), players.get(1), names[index], new GameBoard());
+                        ServerString string = new ServerString();
+                        string.text = names[index];
+                        server.sendToTCP(players.get(0).getID(),string);
+                        server.sendToTCP(players.get(1).getID(),string);
 
                         players.clear();
 
