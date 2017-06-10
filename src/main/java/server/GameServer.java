@@ -33,6 +33,9 @@ public class GameServer{
             kryo.register(ServerString.class);
             kryo.register(GamePacket.class);
             kryo.register(GameBoard.class);
+            kryo.register(byte[][].class);
+            kryo.register(byte[].class);
+            kryo.register(byte.class);
             server.start();
             server.bind(8080, 8081);
             server.addListener(new Listener() {
@@ -52,28 +55,35 @@ public class GameServer{
 
                         GameRooms.add(newGame);
                         newGame.start();
+                        index++;
                     }
                 }
 
                 public void received(Connection connection, Object object) {
                     if (object instanceof ClientPackage) {
                         ClientPackage request = (ClientPackage) object;
-                        //System.out.println(request.gameRoomName);
-                        //System.out.println(request.row);
-                        for (int i = 0; i > GameRooms.size(); i++) {
+                        System.out.println("client roomname: " + request.gameRoomName);
+                        System.out.println("client row " + request.row);
+                        System.out.println("Gamerooms amount "+GameRooms.size());
+                        for (int i = 0; i < GameRooms.size(); i++) {
+                            System.out.println(GameRooms.get(i).name);
                             if (GameRooms.get(i).name.equals(request.gameRoomName)) {
                                 if (connection.getID() == GameRooms.get(i).playerOne.getID()) {
+                                    System.out.println("player 1 drops disc");
                                     //drop disc for player
                                     GameRooms.get(i).dropDisc(request.row,(byte)(GameRooms.get(i).playerOne.getID()%2+1));
                                 } else if (connection.getID() == GameRooms.get(i).playerTwo.getID()) {
+                                    System.out.println("player 2 drops disc");
                                     //drop disc for player 2
                                     GameRooms.get(i).dropDisc(request.row,(byte)(GameRooms.get(i).playerTwo.getID()%2+1));
                                 }
 
                                 //send boardstate to players
-                                GameBoard state = (GameBoard) object;
+                                GameBoard state = GameRooms.get(i).getGameBoard();
 
-                                server.sendToTCP(GameRooms.get(i).playerTwo.getID(), state);
+
+                                System.out.println("Sending board state");
+                                server.sendToTCP(GameRooms.get(i).playerOne.getID(), state);
                                 server.sendToTCP(GameRooms.get(i).playerTwo.getID(), state);
                             }
                         }

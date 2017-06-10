@@ -36,7 +36,7 @@ public class GameRoom implements Runnable{
     }
 
     public GameBoard getGameBoard(){
-        return null;
+        return board;
     }
 
     public void start() {

@@ -22,16 +22,16 @@ import java.net.SocketException;
  */
 public class GameClient implements InputListener{
 
-<<<<<<< HEAD
+
    private String roomName;
    private Client client;
-=======
+
     //public static Client client;
    private InputEvent ie;
    private MainFrame gui;
 
 
->>>>>>> 5e119460e20dcefd13c3d73de886082f1cd673e2
+
 
 
    public void inputReceived(InputEvent ie) {
@@ -41,16 +41,15 @@ public class GameClient implements InputListener{
        request.gameRoomName = roomName;
        client.sendTCP(request);
    }
+
    public void start(){
-       SwingUtilities.invokeLater(new Runnable() {
-           public void run() {
-               GameClient client = new GameClient();
+       //SwingUtilities.invokeLater(new Runnable() {
+
                MainFrame g = new MainFrame();
                gui = g;
-               gui.setInputListener(client);
+               gui.setInputListener(this);
                //client.run();
-           }
-       });
+
        try {
            //Log.set(Log.LEVEL_TRACE);
            client = new Client();
@@ -61,6 +60,9 @@ public class GameClient implements InputListener{
            kryo.register(ServerString.class);
            kryo.register(GamePacket.class);
            kryo.register(GameBoard.class);
+           kryo.register(byte[][].class);
+           kryo.register(byte[].class);
+           kryo.register(byte.class);
 
            client.start();
            client.connect(5000, "127.0.0.1", 8080, 8081);
@@ -69,11 +71,8 @@ public class GameClient implements InputListener{
            client.addListener(new Listener() {
                public void received (Connection connection, Object object) {
                    //connection.setKeepAliveTCP(8000);
-                   if (object instanceof ServerString) {
-                       ServerString response = (ServerString)object;
-                       System.out.println(response.text);
-                   }
                    if(object instanceof GameBoard){
+                       System.out.println("updateing gameboard gui");
                        GameBoard board = (GameBoard)object;
                        byte[][] boardState = board.getBoardState();
 
@@ -89,7 +88,9 @@ public class GameClient implements InputListener{
 
                    }
                    if(object instanceof ServerString){
+
                        ServerString name = (ServerString)object;
+                       System.out.println("roomname: " + name.text);
                         roomName = name.text;
                    }
                }
