@@ -63,6 +63,10 @@ public class GameClient implements InputListener{
                        ServerString response = (ServerString)object;
                        System.out.println(response.text);
                    }
+                   if(object instanceof GameBoard){
+                       GameBoard state = (GameBoard)object;
+                       state.getBoardState();
+                   }
                }
            });
 

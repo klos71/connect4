@@ -36,21 +36,22 @@ public class GameServer{
             server.start();
             server.bind(8080, 8081);
             server.addListener(new Listener() {
-                public void received(Connection connection, Object object) {
-                    connection.setKeepAliveTCP(8000);
-                    players.add(connection);
+                public void connected(Connection c){
+                    players.add(c);
                     System.out.println(players.size());
                     if (players.size() >= 2) {
                         int index = 0;
                         System.out.println("creating gameroom");
                         GameRoom newGame = new GameRoom(players.get(0), players.get(1), names[index], new GameBoard());
 
-                            players.clear();
+                        players.clear();
 
                         GameRooms.add(newGame);
                         newGame.start();
                     }
+                }
 
+                public void received(Connection connection, Object object) {
                     if (object instanceof ClientPackage) {
                         ClientPackage request = (ClientPackage) object;
                         //System.out.println(request.gameRoomName);
@@ -59,10 +60,10 @@ public class GameServer{
                             if (GameRooms.get(i).name.equals(request.gameRoomName)) {
                                 if (connection.getID() == GameRooms.get(i).playerOne.getID()) {
                                     //drop disc for player
-                                    //GameRooms.get(i).dropDisc(request.row,player);
+                                    GameRooms.get(i).dropDisc(request.row,(byte)(GameRooms.get(i).playerOne.getID()%2+1));
                                 } else if (connection.getID() == GameRooms.get(i).playerTwo.getID()) {
                                     //drop disc for player 2
-                                    //GameRooms.get(i).dropDisc(request.row,player);
+                                    GameRooms.get(i).dropDisc(request.row,(byte)(GameRooms.get(i).playerTwo.getID()%2+1));
                                 }
 
                                 //send boardstate to players
