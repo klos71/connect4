@@ -3,15 +3,15 @@ package server;
 import java.io.*;
 import java.util.Scanner;
 
-/**
- * Created by klos71 on 10/06/2017.
- */
 public class Analyzer {
 
-    private int red,yellow;
+    private int tot,red,yellow,redPrcent,YellowPrecent;
 
     public Analyzer() throws IOException{
         readFile();
+        tot = red + yellow;
+        redPrcent = (tot/redPrcent)*100;
+        YellowPrecent = (tot/YellowPrecent)*100;
     }
 
     public void saveWinner(int player){
@@ -23,6 +23,7 @@ public class Analyzer {
             }else if(player == 2){
                 writer.println(red + " " + yellow+1);
             }
+            writer.println("Red%:" + redPrcent + "Yellow%: " + YellowPrecent);
 
             writer.close();
         } catch (IOException e) {

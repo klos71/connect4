@@ -17,9 +17,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by klos71 on 08/06/2017.
- */
 public class GameServer{
 
     private List<Connection> players = new ArrayList<>();
@@ -83,7 +80,7 @@ public class GameServer{
                                         server.sendToTCP(GameRooms.get(i).playerOne.getID(),win);
                                         server.sendToTCP(GameRooms.get(i).playerTwo.getID(),win);
                                         try{
-                                            new Analyzer().saveWinner(1);
+                                            new Analyzer().saveWinner(2);
                                         }catch (IOException e){
                                             e.printStackTrace();
                                         }
@@ -100,7 +97,7 @@ public class GameServer{
                                         server.sendToTCP(GameRooms.get(i).playerOne.getID(),win);
                                         server.sendToTCP(GameRooms.get(i).playerTwo.getID(),win);
                                         try{
-                                            new Analyzer().saveWinner(2);
+                                            new Analyzer().saveWinner(1);
                                         }catch (IOException e){
                                             e.printStackTrace();
                                         }
