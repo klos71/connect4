@@ -3,9 +3,7 @@ package server;
 import com.esotericsoftware.kryonet.Connection;
 import packages.GameBoard;
 
-/**
- * Created by klos71 on 08/06/2017.
- */
+
 public class GameRoom implements Runnable{
 
     private boolean isRunning = true;

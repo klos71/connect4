@@ -17,9 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by klos71 on 08/06/2017.
- */
+
 public class GameServer{
 
     private List<Connection> players = new ArrayList<>();
