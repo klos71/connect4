@@ -1,7 +1,3 @@
 Red|Yellow
-<<<<<<< HEAD
-4 0
-=======
-0 2
-Red winrate: 0.00 | Yellow winrate: 1.00
->>>>>>> 0dc10543d4bfd3bac4afb197bcd2165a2eca75e3
+0 0
+Red winrate: 0.00 | Yellow winrate: 0.00

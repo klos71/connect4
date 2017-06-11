@@ -17,10 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 0dc10543d4bfd3bac4afb197bcd2165a2eca75e3
 public class GameServer{
 
     private List<Connection> players = new ArrayList<>();
