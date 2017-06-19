@@ -1,5 +1,4 @@
 language: java
 os: osx
 os: windows
-gradle: check
-gradle: build
+gradle build
